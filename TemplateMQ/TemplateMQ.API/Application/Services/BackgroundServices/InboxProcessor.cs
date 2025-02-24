@@ -1,9 +1,12 @@
 ﻿namespace TemplateMQ.API.Application.Services.BackgroundServices;
 
-public class InboxProcessor(IMediator mediator, ApplicationDbContext context,ILogger<InboxProcessor> logger) : BackgroundService
+public class InboxProcessor(IMediator mediator, ApplicationDbContext context, IRabbitMqService rabbitMqService,ILogger<InboxProcessor> logger) : BackgroundService
 {
     private readonly IMediator _mediator = mediator;
+#pragma warning disable CS9124 // Parameter is captured into the state of the enclosing type and its value is also used to initialize a field, property, or event.
     private readonly ApplicationDbContext _context = context;
+#pragma warning restore CS9124 // Parameter is captured into the state of the enclosing type and its value is also used to initialize a field, property, or event.
+    private readonly IRabbitMqService _rabbitMqService = rabbitMqService;
     private readonly ILogger<InboxProcessor> _logger = logger;
 
     private const int MaxRetries = 5; // Max retry attempts
@@ -43,7 +46,7 @@ public class InboxProcessor(IMediator mediator, ApplicationDbContext context,ILo
                         Console.WriteLine($"Message {message.Id} moved to Dead-Letter Queue");
                         _logger.LogInformation($"Message is out of max retry count :{message.Id}");
 
-                        //Moveto DLQ need impliment 
+                        await _rabbitMqService.MoveToDeadLetterQueueAsync(message);
                     }
 
                     Console.WriteLine($"Error processing inbox message: {ex.Message}");

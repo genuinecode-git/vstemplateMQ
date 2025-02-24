@@ -18,7 +18,9 @@ public class Repository<T> : IRepository<T> where T : class
 
     public T FirstOrDefault(Expression<Func<T, bool>> predicate)
     {
+#pragma warning disable CS8603 // Possible null reference return.
         return _dbSet.FirstOrDefault(predicate);
+#pragma warning restore CS8603 // Possible null reference return.
     }
 
     public T FirstOrDefaultWithIncludes(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
@@ -31,7 +33,9 @@ public class Repository<T> : IRepository<T> where T : class
             query = query.Include(include);
         }
 
+#pragma warning disable CS8603 // Possible null reference return.
         return query.FirstOrDefault(predicate);
+#pragma warning restore CS8603 // Possible null reference return.
     }
 
     public void Add(T entity)

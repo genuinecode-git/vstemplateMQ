@@ -69,12 +69,6 @@ public class RabbitMqListener(
         await Task.Delay(Timeout.Infinite, stoppingToken);
     }
 
-    //public async Task MoveToDeadLetterQueueAsync(InboxMessage message)
-    //{ 
-    //    var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message));
-    //    await _channel.BasicPublishAsync(exchange: "", routingKey: "dead_letter_queue", body: body);
-    //}
-
     private async Task SetupQueue()
     {
         // Declare the main queue and the dead-letter queue
