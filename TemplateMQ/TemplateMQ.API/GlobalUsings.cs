@@ -14,7 +14,13 @@ global using TemplateMQ.API.Application.Models;
 global using TemplateMQ.API.Application.Validations;
 global using TemplateMQ.API.Behaviours;
 global using TemplateMQ.API.Application.Services.BackgroundServices;
+global using TemplateMQ.API.Application.Models.ConfigurationModels;
+global using TemplateMQ.Domain.Models;
 
+global using Microsoft.Extensions.Options;
+global using RabbitMQ.Client;
+global using RabbitMQ.Client.Events;
+global using System.Text;
 global using Microsoft.AspNetCore.Mvc;
 global using MediatR;
 global using Microsoft.EntityFrameworkCore;
