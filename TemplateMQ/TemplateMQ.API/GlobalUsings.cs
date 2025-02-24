@@ -1,0 +1,29 @@
+﻿global using TemplateMQ.API.Extentions.ExtentionHelpers;
+global using TemplateMQ.API.Extentions;
+global using TemplateMQ.API.Application.Mappings;
+global using TemplateMQ.Infrastructure.Data;
+global using TemplateMQ.API.Application.Models.ViewModels;
+global using TemplateMQ.Infrastructure;
+global using TemplateMQ.Domain.Entities;
+global using TemplateMQ.Domain.Interfaces;
+global using TemplateMQ.Infrastructure.Repositories;
+global using TemplateMQ.API.Application.Commands;
+global using TemplateMQ.API.Application.Queries.Base;
+global using TemplateMQ.API.Application.Queries;
+global using TemplateMQ.API.Application.Models;
+global using TemplateMQ.API.Application.Validations;
+global using TemplateMQ.API.Behaviours;
+
+global using Microsoft.AspNetCore.Mvc;
+global using MediatR;
+global using Microsoft.EntityFrameworkCore;
+global using System.Net;
+global using System.Text.Json;
+global using System.Reflection;
+global using Serilog;
+global using AutoMapper;
+global using Dapper;
+global using Microsoft.Data.SqlClient;
+global using System.Data;
+global using FluentValidation;
+

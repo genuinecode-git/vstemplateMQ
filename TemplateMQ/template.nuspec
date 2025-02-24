@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Microservice Template</id>
+    <version>1.0.0</version>
+    <authors>PrabathSl (genuinecode)</authors>
+    <owners>Prabathsl</owners>
+    <description>Microservice API Template with .netcore8 , API , CQRS, DDD, Dapper , EF Core, FluentValidation and Seri Log</description>
+    <tags>CQRS, DDD, .netcore</tags>
+  </metadata>
+  <files>
+    <file src="**\*" target="content" />
+  </files>
+</package>
