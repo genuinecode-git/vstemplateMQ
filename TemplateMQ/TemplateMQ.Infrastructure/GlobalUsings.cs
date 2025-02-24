@@ -3,6 +3,7 @@ global using TemplateMQ.Domain.Interfaces.Base;
 global using TemplateMQ.Domain.Entities;
 global using TemplateMQ.Infrastructure.Repositories.Base;
 global using TemplateMQ.Infrastructure.Data;
+global using TemplateMQ.Domain.Models;
 
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;

@@ -59,7 +59,7 @@ public class ExceptionHandler(RequestDelegate next, ILogger<ExceptionHandler> lo
             errorResponse.Errors["General"] = ["An unexpected error occurred. Please try again later."];
         }
 
-        var json = JsonSerializer.Serialize(errorResponse);
+        var json = System.Text.Json.JsonSerializer.Serialize(errorResponse);
         await response.WriteAsync(json);
     }
 }

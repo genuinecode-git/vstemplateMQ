@@ -13,12 +13,12 @@ global using TemplateMQ.API.Application.Queries;
 global using TemplateMQ.API.Application.Models;
 global using TemplateMQ.API.Application.Validations;
 global using TemplateMQ.API.Behaviours;
+global using TemplateMQ.API.Application.Services.BackgroundServices;
 
 global using Microsoft.AspNetCore.Mvc;
 global using MediatR;
 global using Microsoft.EntityFrameworkCore;
 global using System.Net;
-global using System.Text.Json;
 global using System.Reflection;
 global using Serilog;
 global using AutoMapper;
@@ -26,4 +26,5 @@ global using Dapper;
 global using Microsoft.Data.SqlClient;
 global using System.Data;
 global using FluentValidation;
+global using Newtonsoft.Json;
 
