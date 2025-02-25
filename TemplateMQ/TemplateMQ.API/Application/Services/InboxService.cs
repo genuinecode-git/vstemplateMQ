@@ -1,17 +1,13 @@
 ﻿namespace TemplateMQ.API.Application.Services;
 
-public class InboxService : IInboxService
+public class InboxService(IUnitOfWork unitOfWork) : IInboxService
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    public InboxService(IUnitOfWork unitOfWork)
-    {
-        _unitOfWork = unitOfWork;
-    }
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     public async Task AddMessageAsync(InboxMessage message)
     {
-        if (message == null) throw new ArgumentNullException(nameof(message));
+        ArgumentNullException.ThrowIfNull(message);
+
         _unitOfWork.InboxMessages.Add(message);
         await _unitOfWork.SaveChangesAsync();
     }

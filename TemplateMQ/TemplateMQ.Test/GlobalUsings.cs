@@ -7,6 +7,8 @@ global using TemplateMQ.API.Controllers;
 global using TemplateMQ.API.Application.Validations;
 global using TemplateMQ.API.Application.Models;
 global using TemplateMQ.API.Extentions.ExtentionHelpers;
+global using TemplateMQ.API.Application.Services;
+global using TemplateMQ.Domain.Models;
 
 global using System.Net;
 global using FluentValidation;
