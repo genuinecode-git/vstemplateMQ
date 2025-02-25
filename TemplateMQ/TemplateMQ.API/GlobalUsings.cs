@@ -16,6 +16,8 @@ global using TemplateMQ.API.Behaviours;
 global using TemplateMQ.API.Application.Services.BackgroundServices;
 global using TemplateMQ.API.Application.Models.ConfigurationModels;
 global using TemplateMQ.Domain.Models;
+global using TemplateMQ.API.Application.Helpers;
+global using TemplateMQ.API.Application.Services;
 
 global using Microsoft.Extensions.Options;
 global using RabbitMQ.Client;
