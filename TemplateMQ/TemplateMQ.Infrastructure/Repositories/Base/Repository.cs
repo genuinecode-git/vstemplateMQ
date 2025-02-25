@@ -51,7 +51,14 @@ public class Repository<T> : IRepository<T> where T : class
         _dbSet.Update(entity);
         _context.SaveChanges();
     }
-
+    public async Task<T?> FindAsync(params object[] keyValues)
+    {
+        return await _dbSet.FindAsync(keyValues);
+    }
+    public async Task<List<T>> FilterAsync(Expression<Func<T, bool>> predicate)
+    {
+        return await _dbSet.Where(predicate).ToListAsync();
+    }
     public void Remove(T entity)
     {
         if (entity == null) throw new ArgumentNullException(nameof(entity));
