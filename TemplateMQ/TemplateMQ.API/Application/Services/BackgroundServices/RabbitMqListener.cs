@@ -1,15 +1,16 @@
 ﻿namespace TemplateMQ.API.Application.Services.BackgroundServices;
 
 public class RabbitMqListener(
-    IServiceProvider serviceProvider,
+    IUnitOfWork unitOfWork,
     IRabbitMqService rabbitMqService,
     ILogger<RabbitMqListener> logger) : BackgroundService
 {
     private readonly ILogger<RabbitMqListener> _logger = logger;
-    private readonly IServiceProvider _serviceProvider = serviceProvider;
+    private readonly IUnitOfWork _unitOfWork =unitOfWork;
     private readonly IRabbitMqService _rabbitMqService = rabbitMqService;
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     private IChannel _channel;
+    private IChannelWrapper _channelWrap;
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -17,8 +18,8 @@ public class RabbitMqListener(
         try
         {
             await _rabbitMqService.SetupQueueAsync();
-            var channelWrap = await _rabbitMqService.CreateChannelAsync();
-            _channel = channelWrap.GetChannel();
+            _channelWrap = await _rabbitMqService.CreateChannelAsync();
+            _channel = _channelWrap.GetChannel();
 
             var consumer = new AsyncEventingBasicConsumer(_channel);
             consumer.ReceivedAsync += async (model, ea) =>
@@ -35,18 +36,21 @@ public class RabbitMqListener(
         }
     }
 
-    private async Task HandleMessageAsync(BasicDeliverEventArgs ea, CancellationToken stoppingToken)
+    public async Task HandleMessageAsync(BasicDeliverEventArgs ea, CancellationToken stoppingToken)
     {
-        var body = ea.Body.ToArray();
-        var message = Encoding.UTF8.GetString(body);
-        var messageId = ea.BasicProperties?.MessageId ?? Guid.NewGuid().ToString();
+        byte[] body = ea.Body.ToArray();
+        string message = Encoding.UTF8.GetString(body);
+        string messageId = ea.BasicProperties?.MessageId ?? Guid.NewGuid().ToString();
+        
+        if (_channel ==null)
+        {
+            _channelWrap = await _rabbitMqService.CreateChannelAsync();
+            _channel = _channelWrap.GetChannel();
+        }
 
         _logger.LogInformation($"Received message: {messageId}");
 
-        using var scope = _serviceProvider.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
-        if (await context.InboxMessages.FindAsync(new object[] { messageId }, stoppingToken) != null)
+        if (await _unitOfWork.InboxMessages.FindAsync(messageId, stoppingToken) != null)
         {
             _logger.LogInformation($"Duplicate message detected: {messageId}. Acknowledging...");
             await _channel.BasicAckAsync(ea.DeliveryTag, false, stoppingToken);
@@ -62,8 +66,8 @@ public class RabbitMqListener(
             RetryCount = 0
         };
 
-        context.InboxMessages.Add(inboxMessage);
-        await context.SaveChangesAsync(stoppingToken);
+        _unitOfWork.InboxMessages.Add(inboxMessage);
+        await _unitOfWork.SaveChangesAsync();
 
         await _channel.BasicAckAsync(ea.DeliveryTag, false, stoppingToken);
     }

@@ -1,4 +1,6 @@
-﻿namespace TemplateMQ.API.Application.Helpers;
+﻿using System.Threading;
+
+namespace TemplateMQ.API.Application.Helpers;
 
 public class ChannelWrapper(IChannel channel) : IChannelWrapper
 {
@@ -17,5 +19,4 @@ public class ChannelWrapper(IChannel channel) : IChannelWrapper
     {
         await _channel.QueueDeclareAsync(queue, durable, exclusive, autoDelete, arguments);
     }
-
 }
