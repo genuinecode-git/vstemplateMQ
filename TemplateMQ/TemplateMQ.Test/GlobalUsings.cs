@@ -8,8 +8,12 @@ global using TemplateMQ.API.Application.Validations;
 global using TemplateMQ.API.Application.Models;
 global using TemplateMQ.API.Extentions.ExtentionHelpers;
 global using TemplateMQ.API.Application.Services;
+global using TemplateMQ.API.Application.Services.BackgroundServices;
 global using TemplateMQ.Domain.Models;
 
+
+global using Microsoft.Extensions.DependencyInjection;
+global using System.Reflection;
 global using System.Net;
 global using FluentValidation;
 global using FluentValidation.Results;

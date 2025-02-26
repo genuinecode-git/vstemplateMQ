@@ -33,7 +33,7 @@ public class InboxProcessor(IMediator mediator, IServiceProvider _serviceProvide
                         _logger.LogError($"Unknown message type: {message.MessageType}");
                         continue;
                     }
-
+                    _logger.LogInformation($"Processing message {message.MessageType}");
                     var command = Newtonsoft.Json.JsonConvert.DeserializeObject(message.Payload, messageType);
                     if (command == null) continue;
 
