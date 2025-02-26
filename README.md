@@ -42,5 +42,5 @@ dotnet new MicroserviceAPIMq -n <YourSolutionName>
 ```
 #### In Visual Studio
 
-![Alt Text](https://github.com/genuinecode-git/vstemplate/blob/main/Application/VisualStudio.PNG)
+![Alt Text](https://github.com/genuinecode-git/vstemplateMQ/blob/main/TemplateMQ/VisualStudio.PNG)
 
