@@ -1,5 +1,3 @@
-
-
 namespace TemplateMQ.API;
 
 public class Program
@@ -17,11 +15,13 @@ public class Program
 
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
         string readConnectionString = builder.Configuration.GetConnectionString("ReadOnlyConnection")??"";
 
         builder.Services.AddMediator();
         builder.Services.AddInfrastructure();
         builder.Services.AddLibraryDependancies(readConnectionString);
+        builder.Services.AddBackgroundServices(builder.Configuration);
 
         // Configure Serilog from appsettings.json
         Log.Logger = new LoggerConfiguration()

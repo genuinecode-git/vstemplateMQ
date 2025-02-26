@@ -1,0 +1,21 @@
+{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "PrabathSl (genuinecode)",
+    "classifications": [ "Web", "CQRS", "Dapper", "Microservice",".netcore","RabbitMQ" ],
+    "identity": "Microservice.Template.MQ",
+    "name": "Microservice API Template With MQ",
+    "shortName": "MicroserviceAPIMq",
+    "tags": {
+      "language": "C#",
+      "type": "solution"
+    },
+    "sourceName": "TemplateMQ",
+    "preferNameDirectory": true,
+    "sources": [
+      {
+        "modifiers": [
+          { "exclude": [ "**/bin/**", "**/obj/**", "**/.vs/**", "**/Migrations/*.json" ] }
+        ]
+      }
+    ]
+  }

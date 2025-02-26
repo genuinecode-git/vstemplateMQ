@@ -1,4 +1,5 @@
 ﻿
+
 namespace TemplateMQ.API.Extentions;
 
 public static class InfrastructureExtention
@@ -7,6 +8,8 @@ public static class InfrastructureExtention
     {
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<ISampleRepository, SampleRepository>();
+        services.AddScoped<IInboxMessageRepository, InboxMessageRepository>();
+        services.AddScoped<IOutboxMessageRepository, OutboxMessageRepository>();
 
         services.AddScoped<ISampleQueries, SampleQueries>();
 
