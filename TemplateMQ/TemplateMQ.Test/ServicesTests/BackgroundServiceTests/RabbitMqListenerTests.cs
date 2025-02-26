@@ -13,7 +13,11 @@ public class RabbitMqListenerTests
     private Mock<ILogger<RabbitMqListener>> _loggerMock;
     private Mock<IChannelWrapper> _channelWrapperMock;
     private Mock<IChannel> _channelMock;
-    private RabbitMqListener _rabbitMqListener;
+    private RabbitMqListener _rabbitMqListener; 
+    private Mock<IServiceProvider> _mockServiceProvider;
+    private Mock<IServiceScope> _mockServiceScope;
+    private Mock<IServiceScopeFactory> _mockServiceScopeFactory;
+
     [SetUp]
     public void SetUp()
     {
@@ -22,7 +26,19 @@ public class RabbitMqListenerTests
         _loggerMock = new Mock<ILogger<RabbitMqListener>>();
         _channelMock = new Mock<IChannel>();
         _channelWrapperMock = new Mock<IChannelWrapper>();
+        _mockServiceProvider = new Mock<IServiceProvider>();
+        _mockServiceScope = new Mock<IServiceScope>();
+        _mockServiceScopeFactory = new Mock<IServiceScopeFactory>();
 
+        _mockServiceProvider.Setup(sp => sp.GetService(typeof(IServiceScopeFactory)))
+           .Returns(_mockServiceScopeFactory.Object);
+        _mockServiceScope.Setup(s => s.ServiceProvider)
+            .Returns(_mockServiceProvider.Object);
+        _mockServiceScopeFactory.Setup(f => f.CreateScope())
+          .Returns(_mockServiceScope.Object);
+        
+        _mockServiceProvider.Setup(sp => sp.GetService(typeof(IUnitOfWork)))
+                    .Returns(_unitOfWorkMock.Object);
         _channelWrapperMock.Setup(c => c.GetChannel()).Returns(_channelMock.Object);
 
         _rabbitMqServiceMock
@@ -31,7 +47,7 @@ public class RabbitMqListenerTests
 
 
         _rabbitMqListener = new RabbitMqListener(
-            _unitOfWorkMock.Object,
+            _mockServiceProvider.Object,
             _rabbitMqServiceMock.Object,
             _loggerMock.Object
         );
@@ -98,7 +114,7 @@ public class RabbitMqListenerTests
             .ReturnsAsync(new InboxMessage { Id = Guid.Parse(messageId) });
 
         RabbitMqListener rabbitMqListener = new(
-            _unitOfWorkMock.Object,
+            _mockServiceProvider.Object,
             _rabbitMqServiceMock.Object,
             _loggerMock.Object
         );

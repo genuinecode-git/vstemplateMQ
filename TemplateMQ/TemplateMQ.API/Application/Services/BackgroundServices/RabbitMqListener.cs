@@ -1,12 +1,12 @@
 ﻿namespace TemplateMQ.API.Application.Services.BackgroundServices;
 
 public class RabbitMqListener(
-    IUnitOfWork unitOfWork,
+    IServiceProvider serviceProvider,
     IRabbitMqService rabbitMqService,
     ILogger<RabbitMqListener> logger) : BackgroundService
 {
     private readonly ILogger<RabbitMqListener> _logger = logger;
-    private readonly IUnitOfWork _unitOfWork =unitOfWork;
+    private readonly IServiceProvider _serviceProvider= serviceProvider;
     private readonly IRabbitMqService _rabbitMqService = rabbitMqService;
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     private IChannel _channel;
@@ -49,6 +49,8 @@ public class RabbitMqListener(
         }
 
         _logger.LogInformation($"Received message: {messageId}");
+        using var scope = _serviceProvider.CreateScope();
+        IUnitOfWork _unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
 
         if (await _unitOfWork.InboxMessages.FindAsync(messageId, stoppingToken) != null)
         {
